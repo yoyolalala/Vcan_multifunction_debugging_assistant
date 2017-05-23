@@ -11,10 +11,10 @@ int main(void)
 {
 	setup();
 	while (1)
-	{      
-		for (float i = 1; i < 100; i += 0.01)
+	{
+		for (float x = 1; x < 100; x += 0.01)
 		{
-			float y = sin(i);
+			float y = sin(x);
 			uart.sendOscilloscope(y);
 			delay_ms(1);
 		}

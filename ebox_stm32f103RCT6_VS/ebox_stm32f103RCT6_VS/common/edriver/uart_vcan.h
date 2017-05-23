@@ -1,24 +1,10 @@
 #pragma once
 #include "ebox.h"
+#include <stdarg.h>
 uint8_t cmd;
 class UartVscan
 {
 	Uart *uart;;
-	union
-	{
-		float f;
-		uint8_t c[4];
-	}floatBuf;
-	union
-	{
-		uint16_t j;
-		uint8_t a[2];
-	}uint16_tBuf;
-	union
-	{
-		uint32_t j;
-		uint8_t a[4];
-	}uint32_tBuf;
 public:
 	UartVscan(Uart *uartX) :
 		uart(uartX)
@@ -55,62 +41,49 @@ public:
 			uart->write(~cmd);
 			uart->write(cmd);
 	}
+	//ÐéÄâÊ¾²¨Æ÷
+	template<typename T>
+	T sendOscilloscope(T x, ...)
+	{
+		cmd = 3;
+		uart->write(cmd);
+		uart->write(~cmd);
+		union
+		{
+			T f;
+			uint8_t c[sizeof(f)];
+		}dataBuf;
+		dataBuf.f = x;
+		for (int i = 0; i < sizeof(x); i++)
+			uart->write(dataBuf.c[i]);
+		uart->write(~cmd);
+		uart->write(cmd);
+	}
 
 	//ÐéÄâÊ¾²¨Æ÷
-	void sendOscilloscope(float f)
-	{
-		floatBuf.f = f;
-		cmd = 3;
-		uart->write(cmd);
-		uart->write(~cmd);
-		uart->write(floatBuf.c[0]);
-		uart->write(floatBuf.c[1]);
-		uart->write(floatBuf.c[2]);
-		uart->write(floatBuf.c[3]);
-		uart->write(~cmd);
-		uart->write(cmd);
-	}
-	void sendOscilloscope(uint8_t data1)
-	{
-		cmd = 3;
-		uart->write(cmd);
-		uart->write(~cmd);
-		uart->write(data1);
-		uart->write(~cmd);
-		uart->write(cmd);
-	}
-	void sendOscilloscope(uint8_t data1,uint8_t data2)
-	{
-		cmd = 3;
-		uart->write(cmd);
-		uart->write(~cmd);
-		uart->write(data1);
-		uart->write(data2);
-		uart->write(~cmd);
-		uart->write(cmd);
-	}
-	void sendOscilloscope(uint16_t data)
-	{
-		uint16_tBuf.j = data;
-		cmd = 3;
-		uart->write(cmd);
-		uart->write(~cmd);
-		uart->write(uint16_tBuf.a[0]);
-		uart->write(uint16_tBuf.a[1]);
-		uart->write(~cmd);
-		uart->write(cmd);
-	}
-	void sendOscilloscope(uint32_t data)
-	{
-		uint32_tBuf.j = data;
-		cmd = 3;
-		uart->write(cmd);
-		uart->write(~cmd);
-		uart->write(uint32_tBuf.a[0]);
-		uart->write(uint32_tBuf.a[1]);
-		uart->write(uint32_tBuf.a[2]);
-		uart->write(uint32_tBuf.a[3]);
-		uart->write(~cmd);
-		uart->write(cmd);
-	}
+	//template<typename T>
+	//T sendOscilloscope(T x, ...)
+	//{
+	//	T next = 0;
+	//	va_list ap;
+	//	va_start(ap, x);
+	//	cmd = 3;
+	//	uart->write(cmd);
+	//	uart->write(~cmd);
+	//	for (int i = 0; i < x; i++)
+	//	{   
+	//		next=va_arg(ap, T);
+	//		union
+	//		{
+	//			T f;
+	//			uint8_t c[sizeof(f)];
+	//		}dataBuf;
+	//		dataBuf.f = next;
+	//		for (int i = 0; i < sizeof(next); i++)
+	//			uart->write(dataBuf.c[i]);
+	//	}
+	//	uart->write(~cmd);
+	//	uart->write(cmd);
+	//	va_end(ap);
+	//}
 };
