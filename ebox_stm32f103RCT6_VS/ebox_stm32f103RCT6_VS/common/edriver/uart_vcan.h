@@ -1,16 +1,16 @@
 #pragma once
 #include "ebox.h"
-#include <stdarg.h>
-uint8_t cmd;
+int cmd;
 class UartVscan
 {
-	Uart *uart;;
+	Uart *uart;	
 public:
 	UartVscan(Uart *uartX) :
-		uart(uartX)
-	{
+ uart(uartX)	
+	{ 
 
 	}
+	//³õÊ¼»¯
 	void begin(uint32_t baud_rate, uint8_t data_bit, uint8_t parity, float stop_bit, uint8_t _use_dma)
 	{
 		uart->begin(baud_rate, data_bit, parity, stop_bit, _use_dma);
@@ -41,9 +41,10 @@ public:
 			uart->write(~cmd);
 			uart->write(cmd);
 	}
+
 	//ĞéÄâÊ¾²¨Æ÷
 	template<typename T>
-	T sendOscilloscope(T x, ...)
+	T sendOscilloscope(T x)
 	{
 		cmd = 3;
 		uart->write(cmd);
@@ -60,30 +61,24 @@ public:
 		uart->write(cmd);
 	}
 
-	//ĞéÄâÊ¾²¨Æ÷
-	//template<typename T>
-	//T sendOscilloscope(T x, ...)
-	//{
-	//	T next = 0;
-	//	va_list ap;
-	//	va_start(ap, x);
-	//	cmd = 3;
-	//	uart->write(cmd);
-	//	uart->write(~cmd);
-	//	for (int i = 0; i < x; i++)
-	//	{   
-	//		next=va_arg(ap, T);
-	//		union
-	//		{
-	//			T f;
-	//			uint8_t c[sizeof(f)];
-	//		}dataBuf;
-	//		dataBuf.f = next;
-	//		for (int i = 0; i < sizeof(next); i++)
-	//			uart->write(dataBuf.c[i]);
-	//	}
-	//	uart->write(~cmd);
-	//	uart->write(cmd);
-	//	va_end(ap);
-	//}
+	template<typename T>
+	T sendOscilloscope(T *y,int n)
+	{
+		cmd = 3;
+		uart->write(cmd);
+		uart->write(~cmd);
+		union
+		{
+			T f;
+			uint8_t c[sizeof(f)];
+		}dataBuf;
+		for (int m = 0; m < n; m++)
+		{
+			dataBuf.f = y[m];
+			for (int i = 0; i < sizeof(dataBuf.f); i++)
+				uart->write(dataBuf.c[i]);
+		}
+		uart->write(~cmd);
+		uart->write(cmd);
+	}
 };

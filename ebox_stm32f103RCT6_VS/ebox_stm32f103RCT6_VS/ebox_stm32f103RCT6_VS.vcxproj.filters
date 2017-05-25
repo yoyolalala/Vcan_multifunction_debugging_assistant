@@ -1294,9 +1294,7 @@
     <None Include="keil.mak">
       <Filter>Source files</Filter>
     </None>
-    <None Include="mcu\stm32f10x\libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\startup\arm\startup_stm32f10x_md.s">
-      <Filter>Source files</Filter>
-    </None>
+    <None Include="mcu\stm32f10x\libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\startup\arm\startup_stm32f10x_hd.s" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="MCU.xml">

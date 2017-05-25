@@ -15,7 +15,8 @@ int main(void)
 		for (float x = 1; x < 100; x += 0.01)
 		{
 			float y = sin(x);
-			uart.sendOscilloscope(y);
+			float m[2] = { x,y };
+			uart.sendOscilloscope(m,2);
 			delay_ms(1);
 		}
 	}
