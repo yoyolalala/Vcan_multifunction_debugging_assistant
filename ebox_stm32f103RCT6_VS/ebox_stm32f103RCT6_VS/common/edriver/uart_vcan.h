@@ -20,13 +20,15 @@ public:
 		uart->begin(baud_rate, _use_dma);
 	}
 
-	//发送图像数据
-	void sendImage(uint8_t *imgaddr, uint32_t imgsize)
+	//发送灰度图像
+	void sendGreyImage(uint8_t* imgaddr, uint32_t width,uint32_t height)
 	{
 		cmd = 1;
 		uart->write(cmd);
 		uart->write(~cmd);
-		uart->write(imgaddr,imgsize);
+		for(uint8_t i=0;i<width;i++)
+			for(uint8_t j=0;j<height;j++)
+				uart->write(imgaddr[i*width+j]);
 		uart->write(~cmd);
 		uart->write(cmd);
 	}
