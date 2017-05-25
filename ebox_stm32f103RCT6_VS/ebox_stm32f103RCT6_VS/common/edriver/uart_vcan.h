@@ -32,15 +32,29 @@ public:
 	}
 
 	//·¢ËÍccd
-	void sendCCD(uint8_t *ccdaddr,uint32_t ccdsize)
+	void sendCCD(uint8_t  *ccdaddr,int ccdsize)
 	{
 	     	cmd = 2;
 			uart->write(cmd);
 			uart->write(~cmd);
-			uart->write(ccdaddr, ccdsize);
+			for(int i = 0; i < ccdsize;i++)
+			 uart->write(ccdaddr[i]);
 			uart->write(~cmd);
 			uart->write(cmd);
 	}
+	void sendCCD(uint8_t  *ccdaddr, uint8_t *ccdaddr2,int ccdsize)
+	{
+		cmd = 2;
+		uart->write(cmd);
+		uart->write(~cmd);
+		for (int i = 0; i < ccdsize; i++)
+			uart->write(ccdaddr[i]);
+		for (int i = 0; i < ccdsize; i++)
+			uart->write(ccdaddr2[i]);
+		uart->write(~cmd);
+		uart->write(cmd);
+	}
+
 
 	//ĞéÄâÊ¾²¨Æ÷
 	template<typename T>

@@ -10,15 +10,14 @@ void setup()
 int main(void)
 {
 	setup();
+	uint8_t x[128],y[128];
+	for (int i = 0; i < 128; i++)
+		 x[i]= 255*sin(float(i)/5);
+	for (int i = 0; i < 128; i++)
+		y[i] = 255 * sin(float(i));
 	while (1)
 	{
-		for (float x = 1; x < 100; x += 0.01)
-		{
-			float y = sin(x);
-			float m[2] = { x,y };
-			uart.sendOscilloscope(m,2);
-			delay_ms(1);
-		}
+		uart.sendCCD(x, y,256);
 	}
 }
 
