@@ -114,6 +114,7 @@
     <ClCompile Include="common\edriver\tb6612fng.cpp" />
     <ClCompile Include="common\edriver\TM1638.cpp" />
     <ClCompile Include="common\edriver\uart_string.cpp" />
+    <ClCompile Include="common\edriver\uart_vcan.cpp" />
     <ClCompile Include="common\edriver\ultrasonic_wave.cpp" />
     <ClCompile Include="common\edriver\ultrasonic_wave_uart.cpp" />
     <ClCompile Include="common\edriver\w25x16.cpp" />
